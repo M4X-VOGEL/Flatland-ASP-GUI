@@ -37,35 +37,32 @@ class Window:
         self.root.mainloop()
 
     def create_grid(self):
-        # Create a frame for the smaller grid area
         width = self.width // 2
-        height = self.height - 50
-
-        frame = tk.Frame(self.root, width=height, height=height)
-        frame.grid(row=0, column=0, padx=10, pady=10)
+        height = self.height
+        canvas = tk.Canvas(self.root, width=height, height=height)
+        canvas.grid(row=0, column=0)
 
         # Load the image using PIL
         image = Image.open("../png/env_001--4_2.png")
         img_width, img_height = image.size
         crop_amount = 4
-        image = image.crop((0, 0, img_width-crop_amount, img_height - crop_amount))
+        image = image.crop((0, 0, img_width - crop_amount, img_height - crop_amount))
         image = image.resize((height, height))
         self.bg_image = ImageTk.PhotoImage(image)
 
-        # Create a Label to hold the background image and add it to the frame
-        bg_label = tk.Label(frame, image=self.bg_image)
-        bg_label.place(relwidth=1, relheight=1)  # Make the image fill the frame
+        # Display the image on the canvas
+        canvas.create_image(0, 0, anchor="nw", image=self.bg_image)
 
-        # cells_per_row = 40
-        # cells_per_column = 40
-        # cell_size = height // cells_per_column
-        #
-        # # Create a grid inside the frame
-        # for row in range(cells_per_row):
-        #     for col in range(cells_per_column):
-        #         empty_cell = tk.Frame(frame, borderwidth=1, relief="solid",
-        #                               width=cell_size,height=cell_size)
-        #         empty_cell.grid(row=row, column=col)
+        cells_per_row = 40
+        cells_per_column = 40
+        cell_size = height // cells_per_column
+
+        # Create a grid of cells inside the canvas
+        for row in range(cells_per_row):
+            for col in range(cells_per_column):
+                canvas.create_rectangle(col * cell_size, row * cell_size,
+                                        (col + 1) * cell_size, (row + 1) * cell_size,
+                                        outline="black", width=1)  # Grid lines
 
 
 if __name__ == "__main__":
