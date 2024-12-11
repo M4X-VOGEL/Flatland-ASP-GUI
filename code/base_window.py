@@ -1,34 +1,25 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
-class Window:
+class BaseWindow:
 
-    def __init__(self, fullscreen=False):
+    def __init__(self):
         self.root = tk.Tk()
-        self.fullscreen = fullscreen
         self.width = self.root.winfo_screenwidth()
         self.height = self.root.winfo_screenheight()
         self.bg_image = None
         self.setup_window()
         self.create_grid()
+        self.create_exit_button()
+        self.create_zoom_buttons()
 
     def setup_window(self):
-        # Set window size
-        if self.fullscreen:
-            self.root.attributes("-fullscreen", True)
-
-            # Bind the Escape key to exit full-screen
-            self.root.bind("<Return>", self.exit_fullscreen)
-
+        self.root.attributes("-fullscreen", True)
         self.root.bind('<Escape>', self.close_window)
 
         self.root.geometry(f"{self.width}x{self.height}")
         self.root.title("Flatland")
         self.root.configure(bg="#000000")
-
-    def exit_fullscreen(self, event=None):
-        # Exit full-screen mode
-        self.root.attributes("-fullscreen", False)
 
     def close_window(self, event=None):
         self.root.quit()  # Close the Tkinter window
@@ -42,17 +33,6 @@ class Window:
         canvas = tk.Canvas(self.root, width=height, height=height)
         canvas.grid(row=0, column=0)
 
-        # Load the image using PIL
-        image = Image.open("../png/env_001--4_2.png")
-        img_width, img_height = image.size
-        crop_amount = 4
-        image = image.crop((0, 0, img_width - crop_amount, img_height - crop_amount))
-        image = image.resize((height, height))
-        self.bg_image = ImageTk.PhotoImage(image)
-
-        # Display the image on the canvas
-        canvas.create_image(0, 0, anchor="nw", image=self.bg_image)
-
         cells_per_row = 40
         cells_per_column = 40
         cell_size = height // cells_per_column
@@ -64,7 +44,35 @@ class Window:
                                         (col + 1) * cell_size, (row + 1) * cell_size,
                                         outline="black", width=1)  # Grid lines
 
+    def create_exit_button(self):
+        close = tk.Button(self.root, command=self.close_window, text="X",
+                          font=("Arial", 20, "bold"),
+                          fg="#FF0000", bg="#000000", bd=0,
+                          width=2, height=1)
+        close.place(x=self.width-45, y=0)
+
+    def create_zoom_buttons(self):
+        zoom_in = tk.Button(self.root, command=self.zoom_in_grid,
+                            text="+", font=("Arial", 20, "bold"),
+                            fg="#00FF00", bg="#000000", bd=0,
+                            width=2, height=1)
+        zoom_in.place(x=self.height + 7, y=self.height - 120)
+
+        zoom_out = tk.Button(self.root, command=self.zoom_out_grid,
+                             text="-", font=("Arial", 20, "bold"),
+                             fg="#00FF00", bg="#000000", bd=0,
+                             width=2, height=1)
+        zoom_out.place(x=self.height + 7, y=self.height - 60)
+
+    def zoom_in_grid(self):
+        print("ZOOM IN")
+        return
+
+    def zoom_out_grid(self):
+        print("ZOOM OUT")
+        return
+
 
 if __name__ == "__main__":
-    test = Window(fullscreen=True)
+    test = BaseWindow()
     test.run()
