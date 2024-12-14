@@ -4,11 +4,10 @@ from PIL import Image, ImageTk
 import tkinter as tk
 
 class RandomGeneratorView(BaseWindow):
-
     def __init__(self):
         super().__init__()
 
-        # initialized vars
+        # Initialize variables
         self.image_scale = 1
 
         # None initialized vars
@@ -17,13 +16,19 @@ class RandomGeneratorView(BaseWindow):
         self.image_on_canvas = None
         self.pan_start = None
 
+        # Grid settings
+        self.grid_rows = 40
+        self.grid_cols = 40
+        self.grid_color = "#000000"
+        self.grid_thickness = 1
+
         # Entry fields
         self.env_width = None
         self.env_height = None
         self.num_agents = None
         self.max_num_cities = None
 
-        # function calls
+        # Function calls
         super().setup_window()
         super().create_exit_button()
         super().create_help_button()
@@ -41,16 +46,6 @@ class RandomGeneratorView(BaseWindow):
         self.create_env_height_entry()
         self.create_number_of_agents_entry()
         self.create_max_number_of_cities_entry()
-
-    def get_entered_params(self):
-        entries = {
-            "Environment Width": self.env_width.get(),
-            "Environment Height": self.env_height.get(),
-            "Number of Agents": self.num_agents.get(),
-            "Max Number of Cities": self.max_num_cities.get(),
-        }
-        print(entries)
-        return
 
     def add_image_to_canvas(self):
         # Load the image
@@ -86,16 +81,78 @@ class RandomGeneratorView(BaseWindow):
             )
         else:
             # Update the image
-            self.canvas.itemconfig(self.image_on_canvas, image=self.display_image)
+            self.canvas.itemconfig(self.image_on_canvas,
+                                   image=self.display_image)
 
         # Update canvas scroll region to match the current image size
         self.canvas.config(scrollregion=(0, 0, new_width, new_height))
+
+        # Redraw the grid
+        self.draw_grid(new_width, new_height)
+
+    def draw_grid(self, img_width, img_height):
+        """Draw a grid with numerical labels fixed to the image."""
+        # Clear existing grid lines and labels
+        self.canvas.delete("grid_line")
+        self.canvas.delete("grid_label")
+
+        # Calculate grid spacing
+        row_spacing = img_height / self.grid_rows
+        col_spacing = img_width / self.grid_cols
+
+        # Get the current position of the image
+        x0, y0 = self.canvas.coords(self.image_on_canvas)
+
+        # Draw horizontal lines and row labels
+        for i in range(self.grid_rows + 1):
+            y = y0 + i * row_spacing
+            # Draw horizontal grid line
+            self.canvas.create_line(
+                x0, y, x0 + img_width, y,
+                fill=self.grid_color,
+                width=self.grid_thickness,
+                tags="grid_line"
+            )
+            # Add row labels
+            if i < self.grid_rows:
+                label_y = y + row_spacing / 2  # Center label between grid lines
+                self.canvas.create_text(
+                    x0 - 20, label_y,  # Position relative to the image
+                    text=str(i + 1),
+                    anchor="e",  # Align text to the right
+                    font=("Arial", 10),
+                    fill=self.grid_color,
+                    tags="grid_label"
+                )
+
+        # Draw vertical lines and column labels
+        for i in range(self.grid_cols + 1):
+            x = x0 + i * col_spacing
+            # Draw vertical grid line
+            self.canvas.create_line(
+                x, y0, x, y0 + img_height,
+                fill=self.grid_color,
+                width=self.grid_thickness,
+                tags="grid_line"
+            )
+            # Add column labels
+            if i < self.grid_cols:
+                label_x = x + col_spacing / 2  # Center label between grid lines
+                self.canvas.create_text(
+                    label_x, y0 - 20,  # Position relative to the image
+                    text=str(i + 1),
+                    anchor="s",  # Align text to the bottom
+                    font=("Arial", 10),
+                    fill=self.grid_color,
+                    tags="grid_label"
+                )
 
     def zoom(self, event):
         """Zoom the image in or out."""
         scale_factor = 1.1 if event.delta > 0 else 0.9
         self.image_scale *= scale_factor
-        self.image_scale = max(0.1, self.image_scale)  # Prevent negative or zero scale
+        self.image_scale = max(0.1,
+                               self.image_scale)  # Prevent negative or zero scale
         self.update_display_image()
 
     def start_pan(self, event):
@@ -103,11 +160,13 @@ class RandomGeneratorView(BaseWindow):
         self.pan_start = (event.x, event.y)
 
     def pan(self, event):
-        """Pan the image within the fixed canvas."""
+        """Pan the image and grid together."""
         if self.pan_start:
             dx = event.x - self.pan_start[0]
             dy = event.y - self.pan_start[1]
             self.canvas.move(self.image_on_canvas, dx, dy)
+            self.canvas.move("grid_line", dx, dy)
+            self.canvas.move("grid_label", dx, dy)
             self.pan_start = (event.x, event.y)
 
     def create_run_button(self):
@@ -265,6 +324,16 @@ class RandomGeneratorView(BaseWindow):
             lambda event: self.on_focusout(event, self.max_num_cities, text)
         )
         self.max_num_cities.place(x=self.height + 300, y=600)
+
+    def get_entered_params(self):
+        entries = {
+            "Environment Width": self.env_width.get(),
+            "Environment Height": self.env_height.get(),
+            "Number of Agents": self.num_agents.get(),
+            "Max Number of Cities": self.max_num_cities.get(),
+        }
+        print(entries)
+        return
 
     def stub(self):
         return
