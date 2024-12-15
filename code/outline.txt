@@ -1,0 +1,45 @@
+- Creating Interactive GUI for ASP-Flatland using Python
+
+1. Environment Map
+    1. Interactive grid cells
+    2. Row and Column labels
+
+2. Creation Menu
+    1. Set parameters
+        1. size of environment
+        2. speed ratio
+        3. malfunction rate
+    2. Create new environment
+        1. Generate random environment
+        2. Create new environment by placing tiles on grid      [TBD]
+            1. Click to place specific track tiles
+                1. Select track type
+                2. Click to place selected type on grid
+                3. Delete option to remove placed tracks
+            2. Click to place trains
+                1. Set Direction
+                2. Set Earliest Departure
+                3. Set Latest Arrival#
+		4. Set corresponding train ID
+            3. Click to place stations
+            4. Reset environment
+    3. Save / Load environments
+    4. Modify existing environment
+            1. Modify trains Start / End / Parameters
+            2. Reset environment
+    5. Run simulation
+
+3. Results Menu
+    1. View full paths
+    2. View gif
+    3. View each timestep
+        1. Forward / Backwards button
+    4. View Time Table
+        1. Earliest Departure
+        2. Actual Departures
+        3. Travel Time
+        4. Latest Arrival
+        5. Actual Arrival
+
+4. Extra Functionality
+    1. Save current settings on close
