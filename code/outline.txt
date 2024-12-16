@@ -19,8 +19,8 @@
             2. Click to place trains
                 1. Set Direction
                 2. Set Earliest Departure
-                3. Set Latest Arrival#
-		4. Set corresponding train ID
+                3. Set Latest Arrival
+		        4. Set corresponding station ID
             3. Click to place stations
             4. Reset environment
     3. Save / Load environments
@@ -31,6 +31,7 @@
 
 3. Results Menu
     1. View full paths
+        1. Show only selected paths
     2. View gif
     3. View each timestep
         1. Forward / Backwards button
@@ -43,3 +44,4 @@
 
 4. Extra Functionality
     1. Save current settings on close
+    2. show cell coordinates on hover
