@@ -27,21 +27,32 @@ class BaseWindow:
         close_button = tk.Button(
             self.root, command=self.close_window,
             text="X", font=("Arial", 20, "bold"),
-            fg="#FF0000", bg="#000000", bd=0, width=2, height=1
+            fg="#FF0000", bg="#000000", bd=0,
+            width=2, height=1
         )
-        close_button.place(x=self.width-45, y=0)
+        close_button.place(
+            x=int(self.width*0.98), y=0
+        )
 
     def create_help_button(self):
         help_button = tk.Button(
             self.root, command=self.open_help_window,
             text="Help", font=("Arial", 20, "bold"),
-            fg="#FFFFFF", bg="#000000", bd=0, width=4, height=1
+            fg="#FFFFFF", bg="#000000", bd=0,
+            width=4, height=1
         )
-        help_button.place(x=self.height + 10, y=0)
+        help_button.place(
+            x=int(self.width*0.501), y=0
+        )
 
     def create_canvas(self):
-        self.canvas = tk.Canvas(self.root, width=self.height, height=self.height)
-        self.canvas.place(x=0, y=0)
+        self.canvas = tk.Canvas(
+            self.root,
+            width=self.width/2, height=self.height
+        )
+        self.canvas.place(
+            x=0, y=0
+        )
 
     def open_help_window(self):
         # Create a new popup window
@@ -54,12 +65,14 @@ class BaseWindow:
             # TODO: change help text
             help_text = file.read()
 
-        label = tk.Label(
+        text_widget = tk.Text(
             popup,
-            text=help_text,font=("Arial", 20),
+            font=("Arial", 14), wrap="word",
             fg="#FFFFFF", bg="#000000"
         )
-        label.pack(pady=20)
+        text_widget.insert("1.0", help_text)  # Insert text at the beginning
+        text_widget.config(state="disabled")  # Make the text widget read-only
+        text_widget.pack(fill="both", expand=True)  # Fill the entire popup
 
 
 if __name__ == "__main__":

@@ -1,1 +1,41 @@
 This is a placeholder for the help text
+
+
+Welcome to the Help Center!
+---------------------------
+
+1. Navigation:
+   Use the menu bar at the top to access different features.
+   - Home: Go back to the main screen.
+   - Settings: Adjust application preferences.
+   - Help: Open this help window.
+
+2. Keyboard Shortcuts:
+   - Ctrl + S: Save your progress.
+   - Ctrl + Z: Undo the last action.
+   - Ctrl + Q: Quit the application.
+
+3. Saving Your Work:
+   - Click the "Save" button in the toolbar.
+   - Ensure you select the correct folder to avoid losing data.
+
+4. Common Issues:
+   - If the app freezes, restart it and check the logs.
+   - For error messages, consult the FAQ section.
+
+5. Contact Support:
+   - Email: support@example.com
+   - Phone: 1-800-HELP-ME
+
+6. Frequently Asked Questions (FAQ):
+   - Q: How do I reset my password?
+     A: Go to Settings > Account > Reset Password.
+   - Q: Can I use the app offline?
+     A: Yes, but some features may be unavailable.
+
+7. Updates and Features:
+   - Check for updates in Settings > About > Check for Updates.
+   - Stay tuned for upcoming features in our newsletters!
+
+8. Feedback:
+   - We value your input. Please share feedback via the "Feedback" option in the menu.
